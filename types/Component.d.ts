@@ -21,6 +21,9 @@ export declare class Component extends HashObject {
      * @param entity
      */
     $setup(entity: Entity): void;
+    /**
+     * @private
+     */
     $unsetup(): void;
     /**
      * 当被创建时
@@ -51,7 +54,15 @@ export declare class Component extends HashObject {
      * 当实体失效或组件被移除时
      */
     onSleep(): void;
+    /**
+     * @private
+     * @param t
+     */
     $onUpdate(t: number): void;
+    /**
+     * @private
+     * @param t
+     */
     $afterUpdate(t: number): void;
     /**
      * 时钟更新
@@ -73,9 +84,21 @@ export declare class Component extends HashObject {
      * @param event
      */
     onInteract(type: any, event: any): any;
-    _dealGlobalTouchBegin(e: any): boolean;
-    _dealGlobalTouchMove(e: any): boolean;
-    _dealGlobalTouchEnd(e: any): boolean;
+    /**
+     * @private
+     * @param e
+     */
+    $dealGlobalTouchBegin(e: any): boolean;
+    /**
+     * @private
+     * @param e
+     */
+    $dealGlobalTouchMove(e: any): boolean;
+    /**
+     * @private
+     * @param e
+     */
+    $dealGlobalTouchEnd(e: any): boolean;
     /**
      * 当全局触摸开始
      * @param e

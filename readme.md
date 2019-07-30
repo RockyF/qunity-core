@@ -2,3 +2,5 @@
 
 ## An entity-component framework
 
+## Build
+``yarn build``  

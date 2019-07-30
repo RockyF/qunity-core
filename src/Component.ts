@@ -6,9 +6,9 @@ import {HashObject} from "./HashObject";
 import {Entity} from "./Entity";
 
 const interactiveMap = [
-	'_dealGlobalTouchBegin',
-	'_dealGlobalTouchMove',
-	'_dealGlobalTouchEnd',
+	'dealGlobalTouchBegin',
+	'dealGlobalTouchMove',
+	'dealGlobalTouchEnd',
 ];
 
 /**
@@ -60,6 +60,9 @@ export class Component extends HashObject {
 		this.onSetup();
 	}
 
+	/**
+	 * @private
+	 */
 	$unsetup() {
 		this._entity = null;
 	}
@@ -111,12 +114,20 @@ export class Component extends HashObject {
 
 	}
 
+	/**
+	 * @private
+	 * @param t
+	 */
 	$onUpdate(t: number) {
 		if(this._enabled){
 			this.onUpdate(t);
 		}
 	}
 
+	/**
+	 * @private
+	 * @param t
+	 */
 	$afterUpdate(t: number) {
 		if(this._enabled){
 			this.afterUpdate(t);
@@ -153,21 +164,33 @@ export class Component extends HashObject {
 	 */
 	onInteract(type, event) {
 		try {
-			return this[interactiveMap[type]](event);
+			return this['$' + interactiveMap[type]](event);
 		} catch (e) {
 			console.warn(e);
 		}
 	}
 
-	_dealGlobalTouchBegin(e) {
+	/**
+	 * @private
+	 * @param e
+	 */
+	$dealGlobalTouchBegin(e) {
 		return this.onGlobalTouchBegin(e);
 	}
 
-	_dealGlobalTouchMove(e) {
+	/**
+	 * @private
+	 * @param e
+	 */
+	$dealGlobalTouchMove(e) {
 		return this.onGlobalTouchMove(e);
 	}
 
-	_dealGlobalTouchEnd(e) {
+	/**
+	 * @private
+	 * @param e
+	 */
+	$dealGlobalTouchEnd(e) {
 		return this.onGlobalTouchEnd(e);
 	}
 

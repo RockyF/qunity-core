@@ -1,6 +1,6 @@
 {
 	"name": "qunity-core",
-	"version": "1.0.2",
+	"version": "1.0.0",
 	"main": "./dist/index.js",
 	"browser": "./dist/index.es.js",
 	"types": "./types/index.d.ts",

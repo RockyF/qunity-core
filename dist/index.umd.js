@@ -548,9 +548,9 @@
 	 * Created by rockyl on 2019-07-28.
 	 */
 	var interactiveMap = [
-	    '_dealGlobalTouchBegin',
-	    '_dealGlobalTouchMove',
-	    '_dealGlobalTouchEnd',
+	    'dealGlobalTouchBegin',
+	    'dealGlobalTouchMove',
+	    'dealGlobalTouchEnd',
 	];
 	/**
 	 * 组件类
@@ -602,6 +602,9 @@
 	        this._entity = entity;
 	        this.onSetup();
 	    };
+	    /**
+	     * @private
+	     */
 	    Component.prototype.$unsetup = function () {
 	        this._entity = null;
 	    };
@@ -640,11 +643,19 @@
 	     */
 	    Component.prototype.onSleep = function () {
 	    };
+	    /**
+	     * @private
+	     * @param t
+	     */
 	    Component.prototype.$onUpdate = function (t) {
 	        if (this._enabled) {
 	            this.onUpdate(t);
 	        }
 	    };
+	    /**
+	     * @private
+	     * @param t
+	     */
 	    Component.prototype.$afterUpdate = function (t) {
 	        if (this._enabled) {
 	            this.afterUpdate(t);
@@ -674,19 +685,31 @@
 	     */
 	    Component.prototype.onInteract = function (type, event) {
 	        try {
-	            return this[interactiveMap[type]](event);
+	            return this['$' + interactiveMap[type]](event);
 	        }
 	        catch (e) {
 	            console.warn(e);
 	        }
 	    };
-	    Component.prototype._dealGlobalTouchBegin = function (e) {
+	    /**
+	     * @private
+	     * @param e
+	     */
+	    Component.prototype.$dealGlobalTouchBegin = function (e) {
 	        return this.onGlobalTouchBegin(e);
 	    };
-	    Component.prototype._dealGlobalTouchMove = function (e) {
+	    /**
+	     * @private
+	     * @param e
+	     */
+	    Component.prototype.$dealGlobalTouchMove = function (e) {
 	        return this.onGlobalTouchMove(e);
 	    };
-	    Component.prototype._dealGlobalTouchEnd = function (e) {
+	    /**
+	     * @private
+	     * @param e
+	     */
+	    Component.prototype.$dealGlobalTouchEnd = function (e) {
 	        return this.onGlobalTouchEnd(e);
 	    };
 	    /**

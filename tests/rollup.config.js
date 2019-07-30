@@ -6,7 +6,8 @@ const typescript = require('rollup-plugin-typescript');
 
 export default {
 	output: {
-		format: 'cjs'
+		format: 'cjs',
+		sourcemap: true,
 	},
 	plugins: [
 		typescript({
