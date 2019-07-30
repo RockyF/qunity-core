@@ -161,7 +161,7 @@ export class Entity extends HashObject {
 	 * @param callback
 	 */
 	eachChild(callback: (child: Entity, index: number) => unknown) {
-		this._children.some(callback);
+		this._children.some(<any>callback);
 	}
 
 	private doAddChild(child: Entity, index: number) {

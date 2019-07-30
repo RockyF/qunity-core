@@ -27,7 +27,7 @@ export class ComponentManager{
 	 * @param callback
 	 */
 	eachComponent(callback: (component: Component, index: number) => unknown) {
-		this._components.some(callback);
+		this._components.some(<any>callback);
 	}
 
 	/**
