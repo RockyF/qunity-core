@@ -68,6 +68,39 @@ export class ComponentManager{
 	}
 
 	/**
+	 * 时钟更新回溯
+	 * @param t
+	 */
+	afterUpdate(t: number) {
+		this.eachComponent(component => {
+			component.$afterUpdate(t);
+		})
+	}
+
+	/**
+	 * 当交互时
+	 * @param type
+	 * @param event
+	 */
+	onInteract(type, event) {
+		if (this._entity.isActive) {
+			let interrupt = false;
+			this.eachComponent(comp => {
+				if (comp.enabled && comp.interactive) {
+					const r = comp.onInteract(type, event);
+					if (r) {
+						interrupt = true;
+					}
+					return false;
+				}
+			});
+			return interrupt;
+		} else {
+			return false;
+		}
+	}
+
+	/**
 	 * 当被销毁时
 	 */
 	onDestroy() {

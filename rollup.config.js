@@ -11,7 +11,7 @@ export default {
 	input: 'src/index.ts',
 	output: [
 		{
-			file: `dist/index.cjs.js`,
+			file: `dist/index.js`,
 			format: 'cjs',
 		},
 		{
@@ -19,7 +19,7 @@ export default {
 			format: 'es',
 		},
 		{
-			file: `dist/index.js`,
+			file: `dist/index.umd.js`,
 			format: 'umd',
 			name,
 		}

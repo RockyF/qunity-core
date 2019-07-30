@@ -4,7 +4,12 @@
 
 import {HashObject} from "./HashObject";
 import {Entity} from "./Entity";
-import {EngineConfig} from "./engine-config";
+
+const interactiveMap = [
+	'_dealGlobalTouchBegin',
+	'_dealGlobalTouchMove',
+	'_dealGlobalTouchEnd',
+];
 
 /**
  * 组件类
@@ -12,6 +17,7 @@ import {EngineConfig} from "./engine-config";
 export class Component extends HashObject {
 	private _entity: Entity;
 	private _enabled: boolean = true;
+	interactive: boolean = false;
 
 	get entity(): Entity {
 		return this._entity;
@@ -51,9 +57,7 @@ export class Component extends HashObject {
 	$setup(entity: Entity) {
 		this._entity = entity;
 
-		if (!EngineConfig.editorMode) {
-			this.onSetup();
-		}
+		this.onSetup();
 	}
 
 	$unsetup() {
@@ -113,6 +117,12 @@ export class Component extends HashObject {
 		}
 	}
 
+	$afterUpdate(t: number) {
+		if(this._enabled){
+			this.afterUpdate(t);
+		}
+	}
+
 	/**
 	 * 时钟更新
 	 * @param t
@@ -122,9 +132,66 @@ export class Component extends HashObject {
 	}
 
 	/**
+	 * 时钟更新回溯
+	 * @param t
+	 */
+	afterUpdate(t: number) {
+
+	}
+
+	/**
 	 * 当被销毁时
 	 */
 	onDestroy() {
 
+	}
+
+	/**
+	 * 当交互时
+	 * @param type
+	 * @param event
+	 */
+	onInteract(type, event) {
+		try {
+			return this[interactiveMap[type]](event);
+		} catch (e) {
+			console.warn(e);
+		}
+	}
+
+	_dealGlobalTouchBegin(e) {
+		return this.onGlobalTouchBegin(e);
+	}
+
+	_dealGlobalTouchMove(e) {
+		return this.onGlobalTouchMove(e);
+	}
+
+	_dealGlobalTouchEnd(e) {
+		return this.onGlobalTouchEnd(e);
+	}
+
+	/**
+	 * 当全局触摸开始
+	 * @param e
+	 */
+	onGlobalTouchBegin(e) {
+		return false;
+	}
+
+	/**
+	 * 当全触摸移动
+	 * @param e
+	 */
+	onGlobalTouchMove(e) {
+		return false;
+	}
+
+	/**
+	 * 当全触摸结束
+	 * @param e
+	 */
+	onGlobalTouchEnd(e) {
+		return false;
 	}
 }

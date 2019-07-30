@@ -106,6 +106,38 @@ var ComponentManager = /** @class */ (function () {
         });
     };
     /**
+     * 时钟更新回溯
+     * @param t
+     */
+    ComponentManager.prototype.afterUpdate = function (t) {
+        this.eachComponent(function (component) {
+            component.$afterUpdate(t);
+        });
+    };
+    /**
+     * 当交互时
+     * @param type
+     * @param event
+     */
+    ComponentManager.prototype.onInteract = function (type, event) {
+        if (this._entity.isActive) {
+            var interrupt_1 = false;
+            this.eachComponent(function (comp) {
+                if (comp.enabled && comp.interactive) {
+                    var r = comp.onInteract(type, event);
+                    if (r) {
+                        interrupt_1 = true;
+                    }
+                    return false;
+                }
+            });
+            return interrupt_1;
+        }
+        else {
+            return false;
+        }
+    };
+    /**
      * 当被销毁时
      */
     ComponentManager.prototype.onDestroy = function () {
@@ -507,6 +539,175 @@ var RootEntity = /** @class */ (function (_super) {
 }(Entity));
 
 /**
+ * Created by rockyl on 2019-07-28.
+ */
+var interactiveMap = [
+    '_dealGlobalTouchBegin',
+    '_dealGlobalTouchMove',
+    '_dealGlobalTouchEnd',
+];
+/**
+ * 组件类
+ */
+var Component = /** @class */ (function (_super) {
+    __extends(Component, _super);
+    function Component() {
+        var _this = _super.call(this) || this;
+        _this._enabled = true;
+        _this.interactive = false;
+        _this.onCreate();
+        return _this;
+    }
+    Object.defineProperty(Component.prototype, "entity", {
+        get: function () {
+            return this._entity;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Component.prototype, "enabled", {
+        /**
+         * 是否有效
+         */
+        get: function () {
+            return this._enabled;
+        },
+        set: function (value) {
+            if (this._enabled != value) {
+                this._enabled = value;
+                if (this._entity && this._entity.isActive) {
+                    if (value) {
+                        this.onEnable();
+                    }
+                    else {
+                        this.onDisable();
+                    }
+                }
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @private
+     * @param entity
+     */
+    Component.prototype.$setup = function (entity) {
+        this._entity = entity;
+        this.onSetup();
+    };
+    Component.prototype.$unsetup = function () {
+        this._entity = null;
+    };
+    /**
+     * 当被创建时
+     * 类似构造方法
+     */
+    Component.prototype.onCreate = function () {
+    };
+    /**
+     * 当装配完成时
+     *
+     * 编辑器模式会在场景构造和属性注入完成后触发
+     */
+    Component.prototype.onSetup = function () {
+    };
+    /**
+     * 当生效时
+     * 仅当实体唤醒状态
+     */
+    Component.prototype.onEnable = function () {
+    };
+    /**
+     * 当失效时
+     * 仅当实体唤醒状态
+     */
+    Component.prototype.onDisable = function () {
+    };
+    /**
+     * 当实体生效或组件被添加时
+     */
+    Component.prototype.onAwake = function () {
+    };
+    /**
+     * 当实体失效或组件被移除时
+     */
+    Component.prototype.onSleep = function () {
+    };
+    Component.prototype.$onUpdate = function (t) {
+        if (this._enabled) {
+            this.onUpdate(t);
+        }
+    };
+    Component.prototype.$afterUpdate = function (t) {
+        if (this._enabled) {
+            this.afterUpdate(t);
+        }
+    };
+    /**
+     * 时钟更新
+     * @param t
+     */
+    Component.prototype.onUpdate = function (t) {
+    };
+    /**
+     * 时钟更新回溯
+     * @param t
+     */
+    Component.prototype.afterUpdate = function (t) {
+    };
+    /**
+     * 当被销毁时
+     */
+    Component.prototype.onDestroy = function () {
+    };
+    /**
+     * 当交互时
+     * @param type
+     * @param event
+     */
+    Component.prototype.onInteract = function (type, event) {
+        try {
+            return this[interactiveMap[type]](event);
+        }
+        catch (e) {
+            console.warn(e);
+        }
+    };
+    Component.prototype._dealGlobalTouchBegin = function (e) {
+        return this.onGlobalTouchBegin(e);
+    };
+    Component.prototype._dealGlobalTouchMove = function (e) {
+        return this.onGlobalTouchMove(e);
+    };
+    Component.prototype._dealGlobalTouchEnd = function (e) {
+        return this.onGlobalTouchEnd(e);
+    };
+    /**
+     * 当全局触摸开始
+     * @param e
+     */
+    Component.prototype.onGlobalTouchBegin = function (e) {
+        return false;
+    };
+    /**
+     * 当全触摸移动
+     * @param e
+     */
+    Component.prototype.onGlobalTouchMove = function (e) {
+        return false;
+    };
+    /**
+     * 当全触摸结束
+     * @param e
+     */
+    Component.prototype.onGlobalTouchEnd = function (e) {
+        return false;
+    };
+    return Component;
+}(HashObject));
+
+/**
  * Created by rockyl on 2019-04-22.
  *
  * 实体相关工具
@@ -643,133 +844,70 @@ function bubbling(target, hitParent, includeSelf) {
 }
 
 /**
- * Created by rockyl on 2018-12-05.
+ * Created by rockyl on 2018/11/9.
  *
- * 引擎配置
+ * 装饰器
  */
 /**
- * 针对引擎的配置
+ * 属性修改时触发
+ * @param onModify
  */
-var EngineConfig = {
-    /**
-     * 是否是编辑器模式
-     */
-    editorMode: false,
-};
-
-/**
- * Created by rockyl on 2019-07-28.
- */
-/**
- * 组件类
- */
-var Component = /** @class */ (function (_super) {
-    __extends(Component, _super);
-    function Component() {
-        var _this = _super.call(this) || this;
-        _this._enabled = true;
-        _this.onCreate();
-        return _this;
-    }
-    Object.defineProperty(Component.prototype, "entity", {
-        get: function () {
-            return this._entity;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Component.prototype, "enabled", {
-        /**
-         * 是否有效
-         */
-        get: function () {
-            return this._enabled;
-        },
-        set: function (value) {
-            if (this._enabled != value) {
-                this._enabled = value;
-                if (this._entity && this._entity.isActive) {
-                    if (value) {
-                        this.onEnable();
-                    }
-                    else {
-                        this.onDisable();
-                    }
+function fieldChanged(onModify) {
+    return function (target, key) {
+        var privateKey = '_' + key;
+        Object.defineProperty(target, key, {
+            enumerable: true,
+            get: function () {
+                return this[privateKey];
+            },
+            set: function (v) {
+                var oldValue = this[privateKey];
+                if (oldValue !== v) {
+                    this[privateKey] = v;
+                    onModify.apply(this, [v, key, oldValue]);
                 }
             }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * @private
-     * @param entity
-     */
-    Component.prototype.$setup = function (entity) {
-        this._entity = entity;
-        if (!EngineConfig.editorMode) {
-            this.onSetup();
+        });
+    };
+}
+/**
+ * 属性变脏时设置宿主的dirty属性为true
+ */
+var dirtyFieldDetector = fieldChanged(function (value, key, oldValue) {
+    this['dirty'] = true;
+});
+/**
+ * 深度属性变脏时设置宿主的dirty属性为true
+ */
+var deepDirtyFieldDetector = fieldChanged(function (value, key, oldValue) {
+    var scope = this;
+    scope['dirty'] = true;
+    if (typeof value === 'object') {
+        value['onModify'] = function () {
+            scope['dirty'] = true;
+        };
+    }
+});
+/**
+ * 属性变脏时触发onModify方法
+ */
+var dirtyFieldTrigger = fieldChanged(function (value, key, oldValue) {
+    this['onModify'] && this['onModify'](value, key, oldValue);
+});
+/**
+ * 深入属性变脏时触发onModify方法
+ */
+var deepDirtyFieldTrigger = fieldChanged(function (value, key, oldValue) {
+    if (this['onModify']) {
+        this['onModify'](value, key, oldValue);
+        if (typeof value === 'object') {
+            value['onModify'] = this['onModify'];
         }
-    };
-    Component.prototype.$unsetup = function () {
-        this._entity = null;
-    };
-    /**
-     * 当被创建时
-     * 类似构造方法
-     */
-    Component.prototype.onCreate = function () {
-    };
-    /**
-     * 当装配完成时
-     *
-     * 编辑器模式会在场景构造和属性注入完成后触发
-     */
-    Component.prototype.onSetup = function () {
-    };
-    /**
-     * 当生效时
-     * 仅当实体唤醒状态
-     */
-    Component.prototype.onEnable = function () {
-    };
-    /**
-     * 当失效时
-     * 仅当实体唤醒状态
-     */
-    Component.prototype.onDisable = function () {
-    };
-    /**
-     * 当实体生效或组件被添加时
-     */
-    Component.prototype.onAwake = function () {
-    };
-    /**
-     * 当实体失效或组件被移除时
-     */
-    Component.prototype.onSleep = function () {
-    };
-    Component.prototype.$onUpdate = function (t) {
-        if (this._enabled) {
-            this.onUpdate(t);
-        }
-    };
-    /**
-     * 时钟更新
-     * @param t
-     */
-    Component.prototype.onUpdate = function (t) {
-    };
-    /**
-     * 当被销毁时
-     */
-    Component.prototype.onDestroy = function () {
-    };
-    return Component;
-}(HashObject));
+    }
+});
 
 /**
  * Created by rockyl on 2019-07-28.
  */
 
-export { Component, Entity, HashObject, RootEntity, bubbling, injectProp, traverse, traversePostorder };
+export { Component, Entity, HashObject, RootEntity, bubbling, deepDirtyFieldDetector, deepDirtyFieldTrigger, dirtyFieldDetector, dirtyFieldTrigger, fieldChanged, injectProp, traverse, traversePostorder };

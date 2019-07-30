@@ -35,6 +35,17 @@ export declare class ComponentManager {
      */
     onUpdate(t: number): void;
     /**
+     * 时钟更新回溯
+     * @param t
+     */
+    afterUpdate(t: number): void;
+    /**
+     * 当交互时
+     * @param type
+     * @param event
+     */
+    onInteract(type: any, event: any): boolean;
+    /**
      * 当被销毁时
      */
     onDestroy(): void;

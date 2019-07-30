@@ -5,3 +5,4 @@ export * from './HashObject';
 export * from './Entity';
 export * from './Component';
 export * from './utils';
+export * from './decorators';
