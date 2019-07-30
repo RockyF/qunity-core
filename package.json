@@ -1,5 +1,5 @@
 {
-	"name": "scilla",
+	"name": "qunity-core",
 	"version": "1.0.2",
 	"main": "./dist/index.es.js",
 	"browser": "./dist/index.es.js",
