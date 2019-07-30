@@ -27,8 +27,6 @@ export default {
 	plugins: [
 		typescript({
 			typescript: require('typescript'),
-			tslib: require('tslib'),
-			declaration: false,
 		}),
 		//uglify({}),
 	]

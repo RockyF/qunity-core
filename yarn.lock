@@ -199,12 +199,12 @@ supports-color@^6.1.0:
 
 tslib@^1.10.0:
   version "1.10.0"
-  resolved "https://registry.npm.taobao.org/tslib/download/tslib-1.10.0.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Ftslib%2Fdownload%2Ftslib-1.10.0.tgz#c3c19f95973fb0a62973fb09d90d961ee43e5c8a"
+  resolved "https://registry.npm.taobao.org/tslib/download/tslib-1.10.0.tgz#c3c19f95973fb0a62973fb09d90d961ee43e5c8a"
   integrity sha1-w8GflZc/sKYpc/sJ2Q2WHuQ+XIo=
 
 typescript@^3.5.3:
   version "3.5.3"
-  resolved "https://registry.npm.taobao.org/typescript/download/typescript-3.5.3.tgz?cache=0&sync_timestamp=1564207631760&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Ftypescript%2Fdownload%2Ftypescript-3.5.3.tgz#c830f657f93f1ea846819e929092f5fe5983e977"
+  resolved "https://registry.npm.taobao.org/typescript/download/typescript-3.5.3.tgz#c830f657f93f1ea846819e929092f5fe5983e977"
   integrity sha1-yDD2V/k/HqhGgZ6SkJL1/lmD6Xc=
 
 uglify-js@^3.4.9:
