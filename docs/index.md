@@ -1,2 +1,2 @@
 # Qunity Core
-## docs coming soon!
+docs coming soon!
