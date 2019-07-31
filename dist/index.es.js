@@ -736,41 +736,6 @@ var Component = /** @class */ (function (_super) {
  * 实体相关工具
  */
 /**
- * 属性注入方法
- * @param target 目标对象
- * @param data 被注入对象
- * @param callback 自定义注入方法
- * @param ignoreMethod 是否忽略方法
- * @param ignoreNull 是否忽略Null字段
- *
- * @return 是否有字段注入
- */
-function injectProp(target, data, callback, ignoreMethod, ignoreNull) {
-    if (ignoreMethod === void 0) { ignoreMethod = true; }
-    if (ignoreNull === void 0) { ignoreNull = true; }
-    if (!target || !data) {
-        return false;
-    }
-    var result = false;
-    for (var key in data) {
-        var value = data[key];
-        if ((!ignoreMethod || typeof value != 'function') && (!ignoreNull || value != null) && key.indexOf('_') !== 0 && key.indexOf('$') !== 0) {
-            if (callback) {
-                callback(target, key, value);
-            }
-            else {
-                try {
-                    target[key] = value;
-                }
-                catch (e) {
-                }
-            }
-            result = true;
-        }
-    }
-    return result;
-}
-/**
  * 实体遍历(先序遍历)
  * @param target 目标实体`
  * @param hitChild 遇到子实体回调
@@ -867,70 +832,7 @@ function bubbling(target, hitParent, includeSelf) {
 }
 
 /**
- * Created by rockyl on 2018/11/9.
- *
- * 装饰器
- */
-/**
- * 属性修改时触发
- * @param onModify
- */
-function fieldChanged(onModify) {
-    return function (target, key) {
-        var privateKey = '_' + key;
-        Object.defineProperty(target, key, {
-            enumerable: true,
-            get: function () {
-                return this[privateKey];
-            },
-            set: function (v) {
-                var oldValue = this[privateKey];
-                if (oldValue !== v) {
-                    this[privateKey] = v;
-                    onModify.apply(this, [v, key, oldValue]);
-                }
-            }
-        });
-    };
-}
-/**
- * 属性变脏时设置宿主的dirty属性为true
- */
-var dirtyFieldDetector = fieldChanged(function (value, key, oldValue) {
-    this['dirty'] = true;
-});
-/**
- * 深度属性变脏时设置宿主的dirty属性为true
- */
-var deepDirtyFieldDetector = fieldChanged(function (value, key, oldValue) {
-    var scope = this;
-    scope['dirty'] = true;
-    if (typeof value === 'object') {
-        value['onModify'] = function () {
-            scope['dirty'] = true;
-        };
-    }
-});
-/**
- * 属性变脏时触发onModify方法
- */
-var dirtyFieldTrigger = fieldChanged(function (value, key, oldValue) {
-    this['onModify'] && this['onModify'](value, key, oldValue);
-});
-/**
- * 深入属性变脏时触发onModify方法
- */
-var deepDirtyFieldTrigger = fieldChanged(function (value, key, oldValue) {
-    if (this['onModify']) {
-        this['onModify'](value, key, oldValue);
-        if (typeof value === 'object') {
-            value['onModify'] = this['onModify'];
-        }
-    }
-});
-
-/**
  * Created by rockyl on 2019-07-28.
  */
 
-export { Component, Entity, HashObject, RootEntity, bubbling, deepDirtyFieldDetector, deepDirtyFieldTrigger, dirtyFieldDetector, dirtyFieldTrigger, fieldChanged, injectProp, traverse, traversePostorder };
+export { Component, Entity, HashObject, RootEntity, bubbling, traverse, traversePostorder };

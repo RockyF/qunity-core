@@ -2,7 +2,7 @@
  * Created by rockyl on 2019-07-29.
  */
 
-import {Entity, RootEntity} from "../src";
+import {Entity, RootEntity} from "../../src";
 
 let root = new RootEntity('root');
 let entity1 = new Entity('entity1');

@@ -2,7 +2,7 @@
  * Created by rockyl on 2019-07-30.
  */
 
-import {Component, Entity, RootEntity} from "../src";
+import {Component, Entity, RootEntity} from "../../src";
 
 let root = new RootEntity('root');
 
