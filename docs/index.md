@@ -13,6 +13,7 @@ QunityCore所实现的E/C架构，能让逻辑解耦成各种单独模块，模�
 2. 只挂载组件A，则实体匀速移动
 3. 只挂载组件B，则实体跳动
 4. 挂载组件A和组件B，则实体会向前跳动
+
 ## QunityCore能干什么？
 QunityCore只是一次架构的实现，所以适用于所有的应用场景(APP，游戏前端，服务器…)，但是QunityCore的设计初衷是为了游戏前端的开发。  
 [QunityEngine](https://rockyf.github.io/qunity-engine/)就是使用QunityCore来实现了组件化开发的游戏引擎。
