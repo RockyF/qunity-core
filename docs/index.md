@@ -1,5 +1,5 @@
 # Qunity Core
-![Logo](https://rockyf.github.io/qunity-core/assets/Logo.png)
+![Logo](https://rockyf.github.io/qunity-core/assets/Logo.png)  
 QunityCore是E/C(实体/组件)架构的实现，如果你会Unity开发，那应该对此很熟悉，Unity就是实现了E/C架构的最典型的例子。  
 ## QunityCore
 与传统E/C架构的不同之处在于：QunityCore的实体子底层实现了Tree的概念，让实体以树的形式存在，这样更有利于映射到现实世界中的场景。  
