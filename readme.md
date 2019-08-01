@@ -2,9 +2,6 @@
 
 ## An entity-component framework
 
-## Build
-``yarn build``  
-
 ## Sample
 ```typescript
 let root = new RootEntity('root');
@@ -32,3 +29,6 @@ cp1.enabled = false;
 
 ## Docs
 [Docs](https://rockyf.github.io/qunity-core/)
+
+## Build
+``yarn build``  
