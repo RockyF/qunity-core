@@ -38,14 +38,14 @@ export class Entity extends HashObject {
 		return this._isFree;
 	}
 
-	get isActive(): boolean{
+	get isActive(): boolean {
 		return !this._isFree && this._enabled
 	}
 
 	/**
 	 * 获取组件管理实例
 	 */
-	get components(){
+	get components() {
 		return this._components;
 	}
 
@@ -59,7 +59,7 @@ export class Entity extends HashObject {
 	set enabled(value: boolean) {
 		if (this._enabled != value) {
 			this._enabled = value;
-			if(!this._isFree){
+			if (!this._isFree) {
 				if (this._enabled) {
 					this.validate();
 				} else {
@@ -110,9 +110,9 @@ export class Entity extends HashObject {
 			let index = this.getChildIndex(child);
 			this._children.splice(index, 1);
 
-			if(!this._isFree){
+			if (!this._isFree) {
 				child._free();
-				if(this._enabled){
+				if (this._enabled) {
 					child.invalidate();
 				}
 			}
@@ -184,9 +184,9 @@ export class Entity extends HashObject {
 			child._parent = this;
 			this._children.splice(index, 0, child);
 
-			if(!this._isFree){
+			if (!this._isFree) {
 				child._restrict();
-				if(this._enabled){
+				if (this._enabled) {
 					child.validate();
 				}
 			}
@@ -279,7 +279,7 @@ export class Entity extends HashObject {
 /**
  * 根实体类
  */
-export class RootEntity extends Entity{
+export class RootEntity extends Entity {
 	protected _isFree: boolean = false;
 	protected _enabled: boolean = true;
 }

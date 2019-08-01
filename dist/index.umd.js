@@ -121,29 +121,6 @@
 	        });
 	    };
 	    /**
-	     * 当交互时
-	     * @param type
-	     * @param event
-	     */
-	    ComponentManager.prototype.onInteract = function (type, event) {
-	        if (this._entity.isActive) {
-	            var interrupt_1 = false;
-	            this.eachComponent(function (comp) {
-	                if (comp.enabled && comp.interactive) {
-	                    var r = comp.onInteract(type, event);
-	                    if (r) {
-	                        interrupt_1 = true;
-	                    }
-	                    return false;
-	                }
-	            });
-	            return interrupt_1;
-	        }
-	        else {
-	            return false;
-	        }
-	    };
-	    /**
 	     * 当被销毁时
 	     */
 	    ComponentManager.prototype.onDestroy = function () {
@@ -547,11 +524,6 @@
 	/**
 	 * Created by rockyl on 2019-07-28.
 	 */
-	var interactiveMap = [
-	    'dealGlobalTouchBegin',
-	    'dealGlobalTouchMove',
-	    'dealGlobalTouchEnd',
-	];
 	/**
 	 * 组件类
 	 */
@@ -677,61 +649,6 @@
 	     * 当被销毁时
 	     */
 	    Component.prototype.onDestroy = function () {
-	    };
-	    /**
-	     * 当交互时
-	     * @param type
-	     * @param event
-	     */
-	    Component.prototype.onInteract = function (type, event) {
-	        try {
-	            return this['$' + interactiveMap[type]](event);
-	        }
-	        catch (e) {
-	            console.warn(e);
-	        }
-	    };
-	    /**
-	     * @private
-	     * @param e
-	     */
-	    Component.prototype.$dealGlobalTouchBegin = function (e) {
-	        return this.onGlobalTouchBegin(e);
-	    };
-	    /**
-	     * @private
-	     * @param e
-	     */
-	    Component.prototype.$dealGlobalTouchMove = function (e) {
-	        return this.onGlobalTouchMove(e);
-	    };
-	    /**
-	     * @private
-	     * @param e
-	     */
-	    Component.prototype.$dealGlobalTouchEnd = function (e) {
-	        return this.onGlobalTouchEnd(e);
-	    };
-	    /**
-	     * 当全局触摸开始
-	     * @param e
-	     */
-	    Component.prototype.onGlobalTouchBegin = function (e) {
-	        return false;
-	    };
-	    /**
-	     * 当全触摸移动
-	     * @param e
-	     */
-	    Component.prototype.onGlobalTouchMove = function (e) {
-	        return false;
-	    };
-	    /**
-	     * 当全触摸结束
-	     * @param e
-	     */
-	    Component.prototype.onGlobalTouchEnd = function (e) {
-	        return false;
 	    };
 	    return Component;
 	}(HashObject));

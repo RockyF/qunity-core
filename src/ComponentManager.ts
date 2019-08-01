@@ -8,13 +8,13 @@ import {Entity} from "./Entity";
 /**
  * 组件管理类
  */
-export class ComponentManager{
+export class ComponentManager {
 	private _entity: Entity;
 	private _components: Component[] = [];
 	private _componentsNameMapping: any;
 	private _componentsDefMapping: any;
 
-	constructor(entity: Entity){
+	constructor(entity: Entity) {
 		this._entity = entity;
 
 		this.eachComponent(component => {
@@ -78,29 +78,6 @@ export class ComponentManager{
 	}
 
 	/**
-	 * 当交互时
-	 * @param type
-	 * @param event
-	 */
-	onInteract(type, event) {
-		if (this._entity.isActive) {
-			let interrupt = false;
-			this.eachComponent(comp => {
-				if (comp.enabled && comp.interactive) {
-					const r = comp.onInteract(type, event);
-					if (r) {
-						interrupt = true;
-					}
-					return false;
-				}
-			});
-			return interrupt;
-		} else {
-			return false;
-		}
-	}
-
-	/**
 	 * 当被销毁时
 	 */
 	onDestroy() {
@@ -113,7 +90,7 @@ export class ComponentManager{
 	 * @param index
 	 */
 	add(component: Component, index?: number) {
-		if(component.entity && component.entity !== this._entity){
+		if (component.entity && component.entity !== this._entity) {
 			console.warn('component.entity was not empty');
 			return;
 		}
@@ -136,7 +113,7 @@ export class ComponentManager{
 		}
 		this._components.splice(index, 0, component);
 
-		if(currentIndex < 0){
+		if (currentIndex < 0) {
 			this.onAddComponent(component);
 		}
 	}
@@ -168,7 +145,7 @@ export class ComponentManager{
 	 */
 	findByName<T extends Component>(name: string): T[] {
 		let components = this._componentsNameMapping[name];
-		if(!components){
+		if (!components) {
 			components = this._componentsNameMapping[name] = <T[]>this._components.filter((component: Component) => {
 				return component.constructor['__class__'] === name;
 			});
@@ -182,7 +159,7 @@ export class ComponentManager{
 	 */
 	find<T extends Component>(clazz: new() => T): T[] {
 		let components = this._componentsDefMapping[clazz.name];
-		if(!components){
+		if (!components) {
 			components = this._componentsDefMapping[clazz.name] = <T[]>this._components.filter((component: Component) => {
 				return component instanceof clazz;
 			});

@@ -78,40 +78,4 @@ export declare class Component extends HashObject {
      * 当被销毁时
      */
     onDestroy(): void;
-    /**
-     * 当交互时
-     * @param type
-     * @param event
-     */
-    onInteract(type: any, event: any): any;
-    /**
-     * @private
-     * @param e
-     */
-    $dealGlobalTouchBegin(e: any): boolean;
-    /**
-     * @private
-     * @param e
-     */
-    $dealGlobalTouchMove(e: any): boolean;
-    /**
-     * @private
-     * @param e
-     */
-    $dealGlobalTouchEnd(e: any): boolean;
-    /**
-     * 当全局触摸开始
-     * @param e
-     */
-    onGlobalTouchBegin(e: any): boolean;
-    /**
-     * 当全触摸移动
-     * @param e
-     */
-    onGlobalTouchMove(e: any): boolean;
-    /**
-     * 当全触摸结束
-     * @param e
-     */
-    onGlobalTouchEnd(e: any): boolean;
 }

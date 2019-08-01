@@ -13,7 +13,7 @@ function getHashCode() {
  */
 export class HashObject {
 	private _hashCode: number;
-	
+
 	constructor() {
 		this._hashCode = getHashCode();
 	}

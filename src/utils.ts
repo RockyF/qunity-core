@@ -53,7 +53,7 @@ export function traversePostorder(target: Entity, hitChild: (child: Entity, ...p
 		for (let i = target.children.length - 1; i >= 0; i--) {
 			const child = target.children[i];
 
-			if(!child.enabled){
+			if (!child.enabled) {
 				continue;
 			}
 			if (traversePostorder(child, hitChild, level - 1, false, fullCallback, ...params)) {
